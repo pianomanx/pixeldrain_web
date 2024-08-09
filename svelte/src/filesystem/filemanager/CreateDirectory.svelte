@@ -1,33 +1,44 @@
 <script>
-import { onMount, createEventDispatcher } from "svelte";
+import { onMount } from "svelte";
 import { fs_mkdir } from "../FilesystemAPI.js";
 import Button from "../../layout/Button.svelte";
-let dispatch = createEventDispatcher()
 
-export let state;
+export let nav;
+
 let name_input;
 let new_dir_name = ""
-let create_dir = () => {
-	dispatch("loading", true)
-
+let error_msg = ""
+let create_dir = async () => {
 	let form = new FormData()
 	form.append("type", "dir")
 
-	fs_mkdir(state.base.path+"/"+new_dir_name).then(resp => {
+	try {
+		nav.set_loading(true)
+		await fs_mkdir(nav.base.path+"/"+new_dir_name)
 		new_dir_name = "" // Clear input field
-	}).catch(err => {
+		error_msg = "" // Clear error msg
+		nav.reload()
+	} catch (err) {
 		if (err.value && err.value === "node_already_exists") {
-			alert("A directory with this name already exists")
+			error_msg = "A directory with this name already exists"
 		} else {
-			alert(err)
+			error_msg = "Server returned an error: "+err
 		}
-	}).finally(() => {
-		dispatch("done")
-	})
+	} finally {
+		nav.set_loading(false)
+	}
 }
 
-onMount(() => { name_input.focus() })
+onMount(() => {
+	name_input.focus()
+})
 </script>
+
+{#if error_msg !== ""}
+	<div class="highlight_yellow create_dir">
+		{error_msg}
+	</div>
+{/if}
 
 <form id="create_dir_form" class="create_dir" on:submit|preventDefault={create_dir}>
 	<img src="/res/img/mime/folder.png" class="icon" alt="icon"/>

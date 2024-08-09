@@ -1,15 +1,12 @@
 <script>
 import { fs_rename, fs_update } from "../FilesystemAPI";
 import Modal from "../../util/Modal.svelte";
-import { createEventDispatcher } from "svelte";
 import BrandingOptions from "./BrandingOptions.svelte";
 import { branding_from_node } from "./Branding";
 import FileOptions from "./FileOptions.svelte";
 import SharingOptions from "./SharingOptions.svelte";
 
-let dispatch = createEventDispatcher()
-
-export let fs_navigator
+export let nav
 let file = {
 	path: "",
 	name: "",
@@ -78,7 +75,7 @@ const save = async (keep_editing = false) => {
 
 	let new_file
 	try {
-		dispatch("loading", true)
+		nav.set_loading(true)
 		let opts = {shared: shared}
 
 		opts.branding_enabled = branding_enabled ? "true" : ""
@@ -113,13 +110,13 @@ const save = async (keep_editing = false) => {
 		}
 		return
 	} finally {
-		dispatch("loading", false)
+		nav.set_loading(false)
 	}
 
 	if (open_after_edit) {
-		fs_navigator.navigate(file.path, false)
+		nav.navigate(file.path, false)
 	} else {
-		fs_navigator.reload()
+		nav.reload()
 	}
 
 	if (keep_editing) {
@@ -149,12 +146,11 @@ const save = async (keep_editing = false) => {
 	<div class="tab_content">
 		{#if tab === "file"}
 			<FileOptions
-				fs_navigator={fs_navigator}
+				nav={nav}
 				bind:file
 				bind:new_name
 				bind:visible
 				bind:open_after_edit
-				on:loading
 			/>
 		{:else if tab === "share"}
 			<SharingOptions

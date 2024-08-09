@@ -1,27 +1,22 @@
 <script>
-import { createEventDispatcher } from "svelte";
 import FilePicker from "../../file_viewer/FilePicker.svelte";
 import { fs_import } from "../FilesystemAPI";
 
-let dispatch = createEventDispatcher()
-
-export let state
+export let nav
 let file_picker
 
 export const open = () => file_picker.open()
 
 const import_files = async files => {
-	dispatch("loading", true)
-	console.log(files)
+	nav.set_loading(true)
 
 	let fileids = []
-
 	files.forEach(file => {
 		fileids.push(file.id)
 	})
 
 	try {
-		await fs_import(state.base.path, fileids)
+		await fs_import(nav.base.path, fileids)
 	} catch (err) {
 		if (err.message) {
 			alert(err.message)
@@ -31,10 +26,9 @@ const import_files = async files => {
 		}
 		return
 	} finally {
-		dispatch("reload")
+		nav.reload()
 	}
 }
-
 </script>
 
 <FilePicker

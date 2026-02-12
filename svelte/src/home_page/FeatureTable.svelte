@@ -116,9 +116,12 @@ import OtherPlans from "./OtherPlans.svelte";
 		<div class="left_col">
 			Storage
 		</div>
-		<div class="feature_cell span2 left pro_feat">
-			<span class="bold">No limit</span><br/>
-			Files expire when they are not downloaded
+		<div class="feature_cell free_feat">
+			<span class="bold">No limit</span>
+		</div>
+		<div class="feature_cell pro_feat">
+			<span class="bold">No limit</span> for regular uploads<br/>
+			2 TB limit for <a href="/filesystem">filesystem</a> uploads
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">€4 / TB / month</span><br/>

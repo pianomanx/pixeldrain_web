@@ -12,7 +12,7 @@ at least 500 MB. The expiry timer is not updated when it was already updated
 within the last 24 hours.
 
 File expiry is often seen as a downside of pixeldrain. But keep in mind that 60
-days is a very long time. Roughly four months. This means that you can keep a
+days is a very long time. Roughly two months. This means that you can keep a
 file active for an entire year by only downloading it three times. Files which
 are only very sporadically downloaded can stay online indefinitely. All this
 time the file is using storage space and processing power on our servers, which

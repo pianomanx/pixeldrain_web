@@ -36,6 +36,18 @@ const groups: {
 			{metric: "scheduler_thumbnail_delete", data_type: "number"},
 		],
 	}, {
+		title: "Hashcheck", expanded: false,
+		graphs: [
+			{metric: "hashcheck_pdq_calculated", data_type: "number"},
+			{metric: "hashcheck_pdq_queue_accepted", data_type: "number"},
+			{metric: "hashcheck_pdq_queue_dropped", data_type: "number"},
+			{metric: "hashcheck_batch_queue_accepted", data_type: "number"},
+			{metric: "hashcheck_batch_queue_dropped", data_type: "number"},
+			{metric: "hashcheck_match_offlimits_sha1", data_type: "number"},
+			{metric: "hashcheck_match_offlimits_pdq", data_type: "number"},
+			{metric: "hashcheck_match_arachnid_pdq", data_type: "number"},
+		],
+	}, {
 		title: "Abuse reports", expanded: false,
 		graphs: [
 			{metric: "abuse_file_instance_blocked", data_type: "number"},

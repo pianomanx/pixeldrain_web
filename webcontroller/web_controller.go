@@ -65,7 +65,7 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 	}
 
 	wc.templates = NewTemplateManager(conf.ResourceDir, conf.APIURLExternal, conf.DebugMode)
-	wc.templates.ParseTemplates(false)
+	wc.templates.ParseTemplates()
 
 	if wc.hostname, err = os.Hostname(); err != nil {
 		panic(fmt.Errorf("could not get hostname: %s", err))

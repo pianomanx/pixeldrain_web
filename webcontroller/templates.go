@@ -114,8 +114,7 @@ func NewTemplateManager(resourceDir, externalAPIEndpoint string, debugMode bool)
 
 // ParseTemplates parses the templates in the template directory which is
 // defined in the config file.
-// If silent is false it will print an info log message for every template found
-func (tm *TemplateManager) ParseTemplates(silent bool) {
+func (tm *TemplateManager) ParseTemplates() {
 	var err error
 	var templatePaths []string
 	tpl := template.New("")
@@ -145,9 +144,6 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 		}
 
 		templatePaths = append(templatePaths, path)
-		if !silent {
-			log.Debug("Template found: %s", path)
-		}
 		return nil
 	}); err != nil {
 		log.Error("Failed to parse templates: %s", err)
@@ -185,10 +181,6 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 			return fmt.Errorf("failed to parse '%s': %w", path, err)
 		}
 
-		if !silent {
-			log.Debug("Template parsed: %s", path)
-		}
-
 		return nil
 	}); err != nil {
 		log.Error("Failed to parse templates: %s", err)
@@ -200,7 +192,7 @@ func (tm *TemplateManager) ParseTemplates(silent bool) {
 // Run runs a template by name
 func (tm *TemplateManager) Run(w io.Writer, r *http.Request, name string, data any) (err error) {
 	if tm.debugModeEnabled {
-		tm.ParseTemplates(true)
+		tm.ParseTemplates()
 	}
 	if r.Method == "HEAD" {
 		return nil

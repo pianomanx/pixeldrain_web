@@ -61,8 +61,6 @@ const open = () => dialog.open(button.getBoundingClientRect())
 				<Button link_href="/#pro" link_target={target} icon="star" label="Get Premium"/>
 			{/if}
 
-			<Button link_href="/filesystem" link_target={target} icon="description" label="Filesystem Guide"/>
-
 			<div class="separator"></div>
 
 			<Button link_href="/user/filemanager#files" link_target={target} icon="image" label="My Files"/>
@@ -73,6 +71,7 @@ const open = () => dialog.open(button.getBoundingClientRect())
 			<Button link_href="/user/settings" link_target={target} icon="settings" label="Account Settings"/>
 			<Button link_href="/user/subscription" link_target={target} icon="shopping_cart" label="Subscription"/>
 			<Button link_href="/user/prepaid/transactions" link_target={target} icon="receipt" label="Transactions"/>
+			<Button link_href="https://docs.pixeldrain.com" link_target={target} icon="text_snippet" label="Documentation"/>
 
 			{#if $user.is_admin}
 				<div class="separator"></div>

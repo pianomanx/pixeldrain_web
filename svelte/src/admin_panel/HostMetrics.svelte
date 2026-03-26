@@ -39,6 +39,7 @@ const groups: {
 		title: "Hashcheck", expanded: false,
 		graphs: [
 			{metric: "hashcheck_pdq_calculated", data_type: "number"},
+			{metric: "hashcheck_pdq_failed", data_type: "number"},
 			{metric: "hashcheck_pdq_queue_accepted", data_type: "number"},
 			{metric: "hashcheck_pdq_queue_dropped", data_type: "number"},
 			{metric: "hashcheck_batch_queue_accepted", data_type: "number"},

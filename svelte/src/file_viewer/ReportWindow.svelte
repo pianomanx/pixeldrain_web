@@ -158,10 +158,12 @@ const report_description = () => {
 <div class="container">
 	<p>
 		If you think this file violates pixeldrain's
-		<a href="/abuse">content policy</a> you can report it for moderation
-		with this form. For copyright infringement notices or urgent matters
-		please use our
-		<a href="/abuse#toc_2">abuse e-mail address</a>.
+		<a href="https://docs.pixeldrain.com/content_policy/">content policy</a>
+		you can report it for moderation with this form. For copyright
+		infringement notices or urgent matters please use our
+		<a
+		href="https://docs.pixeldrain.com/content_policy/reporting_abuse/#e-mail-reporting">abuse
+		e-mail address</a>.
 	</p>
 	<form on:submit={submit} style="width: 100%" class="report_form">
 		<h3>Abuse type</h3>

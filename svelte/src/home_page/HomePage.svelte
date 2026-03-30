@@ -96,8 +96,11 @@ let upload_widget
 				<span class="bold">Unlimited</span> storage space
 			</li>
 			<li>
-				Cloud storage with <a href="/filesystem#toc_7">rclone</a> and <a
-				href="/filesystem#toc_10">FTPS</a> support
+				Cloud storage with <a
+				href="https://docs.pixeldrain.com/filesystem/#rclone">rclone</a>
+				and <a
+				href="https://docs.pixeldrain.com/filesystem/#ftps">FTPS</a>
+				support
 			</li>
 			<li>
 				<span class="bold">Customizable</span> download pages (custom

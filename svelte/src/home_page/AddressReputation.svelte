@@ -27,8 +27,9 @@ onMount(async () => {
 			<p>
 				Your user account has been banned from uploading to
 				pixeldrain due to violation of the
-				<a href="/abuse">content policy</a>. Below is a list of
-				files originating from your account which have been blocked:
+				<a href="https://docs.pixeldrain.com/content_policy/">content
+				policy</a>. Below is a list of files originating from your
+				account which have been blocked:
 			</p>
 
 			<div class="table_scroll">
@@ -83,9 +84,10 @@ onMount(async () => {
 				<p>
 					Your IP address ({result.address}) has been banned from
 					uploading to pixeldrain due to violation of the
-					<a href="/abuse">content policy</a>. Below is a list of
-					files originating from your IP address which have been
-					blocked:
+					<a
+					href="https://docs.pixeldrain.com/content_policy/">content
+					policy</a>. Below is a list of files originating from your
+					IP address which have been blocked:
 				</p>
 			{:else}
 				<p>

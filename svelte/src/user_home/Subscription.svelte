@@ -144,7 +144,7 @@ const update = async (plan) => {
 					<li>€4 per month</li>
 					<li>No storage limit for file sharing</li>
 					<li>4 TB transfer limit (higher plans available)</li>
-					<li>Access to the <a href="/filesystem">filesystem</a></li>
+					<li>Access to the <a href="https://docs.pixeldrain.com/filesystem/">filesystem</a></li>
 					<li>2 TB filesytem storage limit (higher plans available)</li>
 					<li>File expire after 120 days for Pro, and never on the other plans</li>
 				</ul>
@@ -185,7 +185,7 @@ const update = async (plan) => {
 						href="/user/sharing/bandwidth">hotlinking</a>
 						enabled)
 					</li>
-					<li>Access to the <a href="/filesystem">filesystem</a></li>
+					<li>Access to the <a href="https://docs.pixeldrain.com/filesystem/">filesystem</a></li>
 					<li>Files never expire as long as subscription is active</li>
 					<li>
 						Download page <a href="/user/sharing/branding">branding

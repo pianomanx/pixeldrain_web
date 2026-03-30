@@ -120,8 +120,10 @@ import OtherPlans from "./OtherPlans.svelte";
 			<span class="bold">No limit</span>
 		</div>
 		<div class="feature_cell pro_feat">
-			<span class="bold">No limit</span> for regular uploads<br/>
-			2 TB limit for <a href="/filesystem">filesystem</a> uploads
+			<span class="bold">No limit</span> for regular uploads<br/> 2 TB
+			limit for <a
+			href="https://docs.pixeldrain.com/filesystem/">filesystem</a>
+			uploads
 		</div>
 		<div class="feature_cell prepaid_feat">
 			<span class="bold">€4 / TB / month</span><br/>

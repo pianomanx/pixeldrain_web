@@ -302,7 +302,7 @@ const keydown = (e) => {
 <br/>
 <p>
 	By uploading files to pixeldrain you acknowledge and accept our
-	<a href="/abuse">content policy</a>.
+	<a href="https://docs.pixeldrain.com/content_policy/">content policy</a>.
 <p>
 <br/>
 <section class="instruction" style="margin-bottom: 0;">

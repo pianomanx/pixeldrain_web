@@ -17,6 +17,20 @@ const set_provider = async (p: PaymentProvider) => {
 
 <span>Please select a payment provider</span>
 
+<div class="highlight_blue">
+	<p>
+		Unfortunately, PayPal has stopped providing their checkout services to
+		pixeldrain. This leaves us with only cryptocurrencies. I am looking for
+		a new payment provider, preferably one which is not run by dickheads,
+		but those seem to be rare. If you have a suggestion, feel free to
+		<a href="https://docs.pixeldrain.com/community/">let me know</a>. If you
+		are unable to pay with cryptocurrency, you should switch to <a
+		href="https://www.patreon.com/pixeldrain/join">a Patreon
+		subscription</a>
+		instead.
+	</p>
+</div>
+
 <div class="providers">
 	{#each payment_providers as p (p.name)}
 		{#if p.country_filter === undefined || p.country_filter.includes(state.country.alpha2)}

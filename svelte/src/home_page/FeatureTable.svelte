@@ -219,7 +219,6 @@ import OtherPlans from "./OtherPlans.svelte";
 			<span class="bold">PayPal</span>, <span class="bold">Credit/debit</span>
 		</div>
 		<div class="feature_cell prepaid_feat">
-			<span class="bold">PayPal</span>,
 			<span class="bold">Bitcoin</span>,
 			<span class="bold">Litecoin</span>,
 			<span class="bold">Monero</span>,

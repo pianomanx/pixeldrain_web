@@ -20,10 +20,10 @@ export type PaymentProvider = {
 
 export const payment_providers: PaymentProvider[] = [
 	{
-		icon: "paypal",
-		name: "paypal",
-		label: "PayPal",
-	}, {
+		// 	icon: "paypal",
+		// 	name: "paypal",
+		// 	label: "PayPal",
+		// }, {
 		// 	icon: "bancontact",
 		// 	name: "bancontact",
 		// 	label: "Bancontact",

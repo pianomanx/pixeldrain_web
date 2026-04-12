@@ -385,16 +385,7 @@ onMount(() => {
 		{#if creating_dir}
 			<CreateDirectory nav={nav} />
 		{/if}
-
-		{#if $nav.base.path === "/me"}
-			<div class="highlight_shaded" style="background-color: rgba(255, 255, 0, 0.05); border-radius: 0;">
-				The filesystem is experimental!
-				<a href="https://docs.pixeldrain.com/filesystem/">Please read
-				the guide</a>
-			</div>
-		{/if}
 	</div>
-
 
 	{#if $nav.base.abuse_type !== undefined}
 		<div class="highlight_red">

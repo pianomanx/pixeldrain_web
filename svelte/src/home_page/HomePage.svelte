@@ -6,6 +6,8 @@ import AddressReputation from "./AddressReputation.svelte";
 import FeatureTable from "./FeatureTable.svelte";
 import GetStarted from "./GetStarted.svelte";
 import UploadWidget from "./UploadWidget.svelte";
+import PrepaidPricing from "./PrepaidPricing.svelte";
+import Map from "icons/Map.svelte";
 
 let upload_widget
 </script>
@@ -33,122 +35,60 @@ let upload_widget
 	{:else}
 		<section>
 			<p>
-				Pixeldrain offers services for efficiently moving and storing
-				digital files on the internet.
+				<span class="feature_header">
+					Fast and efficient cloud storage
+				</span>
+				<br/>
+				<span>
+					Pixeldrain is built for performance, we don't like to keep
+					you waiting
+				</span>
 			</p>
-			<h2>What pixeldrain is good at</h2>
-			<ul>
-				<li>
-					Serving large files to millions of people worldwide
-				</li>
-				<li>
-					Storing files for less money than all the competition
-				</li>
-			</ul>
-			<h2>Things we take very seriously</h2>
-			<ul>
-				<li>
-					<b>Performance</b> - Slow software is a waste of time. We
-					don't want to make you wait, so pixeldrain is completely
-					tuned for maximum performance
-				</li>
-				<li>
-					<b>Privacy</b> - There is too much tracking on the web
-					nowadays. Pixeldrain goes in the other direction, this site
-					does not contain any advertisements or third party tracking
-					scripts
-				</li>
-				<li>
-					Bullet lists
-				</li>
-			</ul>
+			<p>
+				<span class="feature_header">
+					We take privacy seriously
+				</span>
+				<br/>
+				<span>
+					There are no trackers or advertisements on our website
+				</span>
+			</p>
+			<p>
+				<span class="feature_header">
+					Customizable
+				</span>
+				<br/>
+				<span>
+					Make pixeldrain look the way you want it
+				</span>
+			</p>
+			<p>
+				<span class="feature_header">
+					1600 Gbps bandwidth capacity
+				</span>
+				<br/>
+				<span>
+					We have caching servers in seven different locations
+					worldwide. This makes sure the website is always snappy for
+					you
+				</span>
+			</p>
+			<p>
+				<span class="feature_header">
+					Highly optimized servers
+				</span>
+				<br/>
+				<span>
+					Our global server fleet is optimized for long-distance file
+					transfers. This makes sure you can always reach maximum
+					bandwidth capacity
+				</span>
+			</p>
 		</section>
 	{/if}
 </div>
 
-<header>
-	<h1>Pricing</h1>
-	<span>(Prepaid plan. For monthly subscriptions, look further below)</span>
-</header>
-<div class="page_content">
-	<section>
-		<div class="prices">
-			<div>
-				<div>Storage pricing</div>
-				<div>€ 4 / TB / month</div>
-			</div>
-			<div>
-				<div>Egress pricing</div>
-				<div>€ 1 / TB</div>
-			</div>
-			<div>
-				<div>Minimum fee *</div>
-				<div>€0.01 / day</div>
-			</div>
-		</div>
-		<p style="text-align: center;">
-			* The minimum fee is only charged when daily usage is less than €0.01
-		</p>
-
-		<h2>What you get</h2>
-		<ul>
-			<li>
-				<span class="bold">Unlimited</span> storage space
-			</li>
-			<li>
-				Cloud storage with <a
-				href="https://docs.pixeldrain.com/filesystem/#rclone">rclone</a>
-				and <a
-				href="https://docs.pixeldrain.com/filesystem/#ftps">FTPS</a>
-				support
-			</li>
-			<li>
-				<span class="bold">Customizable</span> download pages (custom
-				branding colours, header and background images)
-			</li>
-			<li>
-				<span class="bold">Fault tolerance</span> for up to four storage
-				server failures
-			</li>
-			<li>
-				<span class="bold">1.6 Terabits per second</span> of total
-				bandwidth capacity
-			</li>
-			<li>
-				Twenty-three high-performance caching servers optimized for data
-				transfer over long distances
-			</li>
-			<li>
-				File caching in
-				<span class="bold">Portland</span>,
-				<span class="bold">Querétaro</span>,
-				<span class="bold">New York</span>,
-				<span class="bold">São Paulo</span>,
-				<span class="bold">Frankfurt</span> and
-				<span class="bold">Singapore</span>
-			</li>
-		</ul>
-		<img class="image" src="/res/img/map.webp" alt="A globe showing datacenter locations"/>
-		<h3>What you don't get</h3>
-		<ul>
-			<li>
-				Data backups - Please keep a local copy of everything you store
-				in case of emergency
-			</li>
-			<li>
-				Commercial support - If you have a question, please check the <a
-				href="/about">Q&A page</a> first. If that doesn't answer it, try
-				the <a href="https://discord.gg/UDjaBGwr4p"
-				target="_blank">support channel</a> on Discord.
-			</li>
-		</ul>
-	</section>
-</div>
-
-<header>
-	<h1>Get started</h1>
-</header>
-<GetStarted/>
+<Map/>
 
 <header id="pro">
 	<h1>Subscription plans</h1>
@@ -157,10 +97,22 @@ let upload_widget
 	<FeatureTable/>
 </div>
 
+<header>
+	<h1>Prepaid plan</h1>
+</header>
+<div class="page_content">
+	<PrepaidPricing/>
+</div>
+
+<header>
+	<h1>Get started</h1>
+</header>
+<GetStarted/>
+
 <Footer nobg/>
 
 <style>
-:global(.page_body) {
+.logo_header {
 	background-image: url("/res/img/inflating_star.webp");
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -186,19 +138,22 @@ header {
 	padding-top: 0;
 	padding-bottom: 0;
 }
-header > h1,
-header > span {
-	color: #ffffff;
-	text-shadow: 0 0 4px #000000;
+header > h1 {
 	margin-top: 30px;
 	margin-bottom: 30px;
+}
+
+.feature_header {
+	font-weight: bold;
+	color: var(--highlight_color);
+	text-shadow: 1px 1px 0px var(--shadow_color);
 }
 
 .header_image_container {
 	text-align: initial;
 	margin: auto;
 	margin-bottom: 1.5em; /*Offset for menu button*/
-	height: 150px;
+	height: 200px;
 	width: 500px;
 	max-width: 100%;
 	background-image: url("/res/img/header_orbitron.webp");
@@ -210,41 +165,7 @@ header > span {
 	display: flex;
 	justify-content: end;
 }
-.image {
-	max-width: 100%;
-	border-radius: 12px;
-}
 .drop_target {
 	border-radius: 8px;
-}
-.bold {
-	font-weight: bold;
-	color: var(--highlight_color);
-	text-shadow: 1px 1px 3px var(--shadow_color);
-}
-
-.prices {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 10px;
-}
-.prices > div {
-	flex: 1 0 200px;
-	min-width: 200px;
-	display: flex;
-	flex-direction: column;
-	text-align: center;
-	border-radius: 6px;
-	overflow: hidden;
-	border: 2px solid var(--card_color);
-}
-.prices > div > div {
-	padding: 4px;
-}
-.prices > div > div:nth-child(2) {
-	background: var(--card_color);
-	font-size: 1.3em;
 }
 </style>

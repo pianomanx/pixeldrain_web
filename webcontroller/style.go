@@ -269,7 +269,7 @@ func (s styleSheet) String() string {
 		s.Chart1.CSS(),
 		s.Chart2.CSS(),
 		s.Chart3.CSS(),
-		s.BodyColor.Darken(0.8).CSS(),
+		s.BodyColor.Darken(0.7).CSS(),
 		s.StyleOverrides,
 	)
 }

@@ -4,17 +4,6 @@ import Euro from "util/Euro.svelte";
 import OtherPlans from "./OtherPlans.svelte";
 </script>
 
-<section>
-	<p>
-		Pixeldrain features two different payment modes. We offer a monthly
-		subscription which is managed by Patreon, and a Prepaid subscription
-		which supports a dozen different payment providers. With Prepaid you pay
-		in advance to charge your credit, then usage will be subtracted from
-		your account credit. For low usage Prepaid is usually better as the
-		monthly fee is much lower.
-	</p>
-</section>
-
 <div class="vertical_scroll">
 	<div class="grid">
 		<div></div>
@@ -56,7 +45,24 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 
 		<div class="left_col">
-			<a href="/about#toc_3">Transfer limit</a>
+			Storage
+		</div>
+		<div class="feature_cell free_feat">
+			<span class="bold">No limit</span>
+		</div>
+		<div class="feature_cell pro_feat">
+			<span class="bold">No limit</span> for regular uploads<br/> 2 TB
+			limit for <a
+			href="https://docs.pixeldrain.com/filesystem/">filesystem</a>
+			uploads
+		</div>
+		<div class="feature_cell prepaid_feat">
+			<span class="bold">€4 / TB / month</span><br/>
+			No limit, you pay for what you use
+		</div>
+
+		<div class="left_col">
+			Egress transfer limit
 		</div>
 		<div class="feature_cell free_feat">
 			<Tooltip>
@@ -102,36 +108,42 @@ import OtherPlans from "./OtherPlans.svelte";
 		</div>
 
 		<div class="left_col">
-			<a href="/about#toc_6">Hotlinking</a>
+			Hotlinking
 		</div>
 		<div class="feature_cell free_feat">
-			<span class="bold">Hotlinking not supported</span><br/>
-			Hotlinked files get blocked
+			<Tooltip>
+				<span slot="label" class="bold">Hotlinking not supported</span>
+				<p>
+					This means that you cannot embed your files in other
+					websites or download files without passing through the
+					download page first.
+				</p>
+				<p>
+					For more information, see <a
+					href="https://docs.pixeldrain.com/questions_and_answers/#how-does-hotlinking-work">the
+					documentation site</a>.
+				</p>
+			</Tooltip>
 		</div>
 		<div class="feature_cell span2 right pro_feat">
-			<span class="bold">Hotlinking supported</span><br/>
-			Hotlinking uses your transfer limit
+			<Tooltip>
+				<span slot="label" class="bold">Hotlinking supported</span>
+				<p>
+					With hotlinking you can directly embed your videos, images
+					and other files into your own website. You also don't need
+					to go through the download page to download files. You can
+					use download managers without problems.
+				</p>
+				<p>
+					For more information, see <a
+					href="https://docs.pixeldrain.com/questions_and_answers/#how-does-hotlinking-work">the
+					documentation site</a>.
+				</p>
+			</Tooltip>
 		</div>
 
 		<div class="left_col">
-			Storage
-		</div>
-		<div class="feature_cell free_feat">
-			<span class="bold">No limit</span>
-		</div>
-		<div class="feature_cell pro_feat">
-			<span class="bold">No limit</span> for regular uploads<br/> 2 TB
-			limit for <a
-			href="https://docs.pixeldrain.com/filesystem/">filesystem</a>
-			uploads
-		</div>
-		<div class="feature_cell prepaid_feat">
-			<span class="bold">€4 / TB / month</span><br/>
-			No limit, you pay for what you use
-		</div>
-
-		<div class="left_col">
-			<a href="/about#toc_1">File expiry</a>
+			File expiry
 		</div>
 		<div class="feature_cell free_feat">
 			<Tooltip>
@@ -305,7 +317,7 @@ import OtherPlans from "./OtherPlans.svelte";
 	display: inline-grid;
 	grid-auto-flow: row;
 	grid-template-columns: 9em 1fr 1fr 1fr;
-	min-width: 40em;
+	min-width: 50em;
 	max-width: 70em;
 	gap: 5px;
 	margin: 10px;

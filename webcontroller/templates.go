@@ -37,7 +37,7 @@ type TemplateData struct {
 	URLQuery url.Values
 }
 
-func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData) {
+func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request) (t *TemplateData, err error) {
 	t = &TemplateData{
 		tpm:           wc.templates,
 		Authenticated: false,
@@ -51,7 +51,7 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 		URLQuery: r.URL.Query(),
 	}
 
-	// If the user is authenticated we'll indentify him and put the user info
+	// If the user is authenticated we'll identify him and put the user info
 	// into the templatedata. This is used for putting the username in the menu
 	// and stuff like that
 	if key, err := wc.getAPIKey(r); err == nil {
@@ -81,15 +81,17 @@ func (wc *WebController) newTemplateData(w http.ResponseWriter, r *http.Request)
 					Expires: time.Unix(0, 0),
 					Domain:  ".pixeldrain.com",
 				})
+				return t, nil
 			}
-			return t
+
+			return t, err
 		}
 
 		// Authentication succeeded
 		t.Authenticated = true
 	}
 
-	return t
+	return t, nil
 }
 
 // TemplateManager parses templates and provides utility functions to the

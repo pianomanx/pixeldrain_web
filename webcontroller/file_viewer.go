@@ -102,9 +102,12 @@ func (wc *WebController) serveFileViewer(w http.ResponseWriter, r *http.Request,
 	// Prevent search engines from indexing this page for privacy reasons
 	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
 
-	var err error
 	var ids = strings.Split(p.ByName("id"), ",")
-	var templateData = wc.newTemplateData(w, r)
+	templateData, err := wc.newTemplateData(w, r)
+	if tpl := apiErrorTemplate(err, w); tpl != "" {
+		wc.templates.Run(w, r, tpl, templateData)
+		return
+	}
 
 	var files []pixelapi.ListFile
 	for _, id := range ids {
@@ -189,9 +192,13 @@ func (wc *WebController) serveListViewer(w http.ResponseWriter, r *http.Request,
 
 	// Prevent search engines from indexing this page for privacy reasons
 	w.Header().Set("X-Robots-Tag", "noindex, nofollow")
+	templateData, err := wc.newTemplateData(w, r)
+	if tpl := apiErrorTemplate(err, w); tpl != "" {
+		wc.templates.Run(w, r, tpl, templateData)
+		return
+	}
 
-	var templateData = wc.newTemplateData(w, r)
-	var list, err = templateData.PixelAPI.GetListID(p.ByName("id"))
+	list, err := templateData.PixelAPI.GetListID(p.ByName("id"))
 	if err != nil {
 		tpl := apiErrorTemplate(err, w)
 		if tpl == "404" {

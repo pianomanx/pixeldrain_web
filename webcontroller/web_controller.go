@@ -90,7 +90,12 @@ func New(r *httprouter.Router, prefix string, conf Config) (wc *WebController) {
 	if conf.MaintenanceMode {
 		r.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusServiceUnavailable)
-			wc.templates.Run(w, r, "maintenance", wc.newTemplateData(w, r))
+			templateData, err := wc.newTemplateData(w, r)
+			if tpl := apiErrorTemplate(err, w); tpl != "" {
+				wc.templates.Run(w, r, tpl, templateData)
+				return
+			}
+			wc.templates.Run(w, r, "maintenance", templateData)
 		})
 		return wc
 	}
@@ -217,7 +222,12 @@ type handlerOpts struct {
 
 func (wc *WebController) serveLandingPage() httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		var td = wc.newTemplateData(w, r)
+		td, err := wc.newTemplateData(w, r)
+		if tpl := apiErrorTemplate(err, w); tpl != "" {
+			wc.templates.Run(w, r, tpl, td)
+			return
+		}
+
 		var template = "home"
 
 		// If the user is logged in, run user home template
@@ -237,13 +247,18 @@ func (wc *WebController) serveTemplate(tpl string, opts handlerOpts) httprouter.
 			w.Header().Set("X-Frame-Options", "DENY")
 		}
 
-		var td = wc.newTemplateData(w, r)
+		td, err := wc.newTemplateData(w, r)
+		if tpl := apiErrorTemplate(err, w); tpl != "" {
+			wc.templates.Run(w, r, tpl, td)
+			return
+		}
+
 		if opts.Auth && !td.Authenticated {
 			http.Redirect(w, r, "/login?redirect="+url.QueryEscape(r.URL.Path), http.StatusSeeOther)
 			return
 		}
 
-		err := wc.templates.Run(w, r, tpl, td)
+		err = wc.templates.Run(w, r, tpl, td)
 		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
@@ -256,16 +271,20 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 		if opts.NoEmbed {
 			w.Header().Set("X-Frame-Options", "DENY")
 		}
+		td, err := wc.newTemplateData(w, r)
+		if tpl := apiErrorTemplate(err, w); tpl != "" {
+			wc.templates.Run(w, r, tpl, td)
+			return
+		}
 
-		var tpld = wc.newTemplateData(w, r)
-		if opts.Auth && !tpld.Authenticated {
+		if opts.Auth && !td.Authenticated {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
 
 		// Execute the raw markdown template and save the result in a buffer
 		var tplBuf bytes.Buffer
-		err = wc.templates.Run(&tplBuf, r, tpl, tpld)
+		err = wc.templates.Run(&tplBuf, r, tpl, td)
 		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 			return
@@ -291,7 +310,7 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 			// the template and in the metadata. When entering a h1 node the
 			// first child will be the title of the document. Save that value
 			if node.Type == blackfriday.Heading && node.HeadingData.Level == 1 {
-				tpld.Title = string(node.FirstChild.Literal)
+				td.Title = string(node.FirstChild.Literal)
 				return blackfriday.SkipChildren
 			}
 
@@ -311,10 +330,10 @@ func (wc *WebController) serveMarkdown(tpl string, opts handlerOpts) httprouter.
 		})
 
 		// Pass the buffer's parsed contents to the wrapper template
-		tpld.Other = template.HTML(mdBuf.Bytes())
+		td.Other = template.HTML(mdBuf.Bytes())
 
 		// Execute the wrapper template
-		err = wc.templates.Run(w, r, "markdown_wrapper", tpld)
+		err = wc.templates.Run(w, r, "markdown_wrapper", td)
 		if err != nil && !util.IsNetError(err) {
 			log.Error("Error executing template '%s': %s", tpl, err)
 		}
@@ -332,19 +351,36 @@ func (wc *WebController) serveFile(path string) httprouter.Handle {
 }
 
 func (wc *WebController) serveForbidden(w http.ResponseWriter, r *http.Request) {
+	td, err := wc.newTemplateData(w, r)
+	if tpl := apiErrorTemplate(err, w); tpl != "" {
+		wc.templates.Run(w, r, tpl, td)
+		return
+	}
+
 	log.Debug("Forbidden: %s", r.URL)
 	w.WriteHeader(http.StatusForbidden)
-	wc.templates.Run(w, r, "403", wc.newTemplateData(w, r))
+	wc.templates.Run(w, r, "403", td)
 }
 
 func (wc *WebController) serveNotFound(w http.ResponseWriter, r *http.Request) {
+	td, err := wc.newTemplateData(w, r)
+	if tpl := apiErrorTemplate(err, w); tpl != "" {
+		wc.templates.Run(w, r, tpl, td)
+		return
+	}
+
 	log.Debug("Not Found: %s", r.URL)
 	w.WriteHeader(http.StatusNotFound)
-	wc.templates.Run(w, r, "404", wc.newTemplateData(w, r))
+	wc.templates.Run(w, r, "404", td)
 }
 func (wc *WebController) serveUnavailableForLegalReasons(w http.ResponseWriter, r *http.Request) {
+	td, err := wc.newTemplateData(w, r)
+	if tpl := apiErrorTemplate(err, w); tpl != "" {
+		wc.templates.Run(w, r, tpl, td)
+		return
+	}
 	w.WriteHeader(http.StatusUnavailableForLegalReasons)
-	wc.templates.Run(w, r, "451", wc.newTemplateData(w, r))
+	wc.templates.Run(w, r, "451", td)
 }
 
 func (wc *WebController) getAPIKey(r *http.Request) (key string, err error) {

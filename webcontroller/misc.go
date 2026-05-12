@@ -16,7 +16,11 @@ import (
 // non-existent demo file. This is required by the a-ads ad network to allow for
 // automatic checking of the presence of the ad unit on this page.
 func (wc *WebController) serveShareXConfig(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	templateData := wc.newTemplateData(w, r)
+	templateData, err := wc.newTemplateData(w, r)
+	if tpl := apiErrorTemplate(err, w); tpl != "" {
+		wc.templates.Run(w, r, tpl, templateData)
+		return
+	}
 
 	w.Header().Add("Content-Disposition", "attachment; filename=pixeldrain.com.sxcu")
 	if templateData.Authenticated {
@@ -74,6 +78,9 @@ func searchAPIError(err error) *pixelapi.Error {
 }
 
 func apiErrorTemplate(err error, w http.ResponseWriter) (templateName string) {
+	if err == nil {
+		return ""
+	}
 	if apiErr := searchAPIError(err); apiErr != nil {
 		switch apiErr.Status {
 		case http.StatusNotFound:

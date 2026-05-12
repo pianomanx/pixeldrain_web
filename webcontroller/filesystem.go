@@ -11,8 +11,11 @@ import (
 )
 
 func (wc *WebController) serveDirectory(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-	var err error
-	var td = wc.newTemplateData(w, r)
+	td, err := wc.newTemplateData(w, r)
+	if tpl := apiErrorTemplate(err, w); tpl != "" {
+		wc.templates.Run(w, r, tpl, td)
+		return
+	}
 	var path = strings.TrimPrefix(p.ByName("path"), "/")
 
 	// Prevent search engines from indexing this page for privacy reasons

@@ -89,6 +89,9 @@ func apiErrorTemplate(err error, w http.ResponseWriter) (templateName string) {
 		case http.StatusTooManyRequests:
 			w.WriteHeader(http.StatusTooManyRequests)
 			return "428"
+		case http.StatusInternalServerError:
+			w.WriteHeader(http.StatusInternalServerError)
+			return "500"
 		}
 	} else if strings.HasSuffix(err.Error(), "invalid control character in URL") {
 		w.WriteHeader(http.StatusNotFound)

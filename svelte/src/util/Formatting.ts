@@ -1,6 +1,8 @@
 export const formatNumber = (amt: number, precision: number) => {
 	if (precision < 3) { precision = 3; }
-	if (amt >= 1e6) {
+	if (amt >= 1e9) {
+		return (amt / 1e9).toPrecision(precision) + "G";
+	} else if (amt >= 1e6) {
 		return (amt / 1e6).toPrecision(precision) + "M";
 	} else if (amt >= 1e3) {
 		return (amt / 1e3).toPrecision(precision) + "k";

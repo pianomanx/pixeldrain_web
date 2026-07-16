@@ -54,12 +54,17 @@ const second = 1000
 const minute = second * 60
 const hour = minute * 60
 const day = hour * 24
+const year = day * 365
 
 export const formatDuration = (ms: number, decimals: number) => {
 	let remainingDecimals = decimals
 	let res = ""
+	if (ms >= year && remainingDecimals > 0) {
+		res += Math.floor(ms / year) + "y "
+		remainingDecimals--
+	}
 	if (ms >= day && remainingDecimals > 0) {
-		res += Math.floor(ms / day) + "d "
+		res += Math.floor((ms % year) / day) + "d "
 		remainingDecimals--
 	}
 	if (ms >= hour && remainingDecimals > 0) {

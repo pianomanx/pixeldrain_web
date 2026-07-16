@@ -25,7 +25,27 @@ const groups: {
 			{metric: "api_error_400", data_type: "number"},
 			{metric: "api_error_500", data_type: "number"},
 			{metric: "api_panic", data_type: "number"},
+			{metric: "api_rate_limited", data_type: "number"},
+			{metric: "api_file_upload", data_type: "number"},
+			{metric: "api_file_upload_size", data_type: "bytes"},
+			{metric: "api_file_read", data_type: "number"},
+			{metric: "api_file_read_size", data_type: "bytes"},
+			{metric: "api_list_create", data_type: "number"},
+			{metric: "api_list_read", data_type: "number"},
+			{metric: "api_list_update", data_type: "number"},
+			{metric: "api_list_delete", data_type: "number"},
+			{metric: "api_user_register", data_type: "number"},
+			{metric: "api_user_login", data_type: "number"},
+			{metric: "api_user_delete", data_type: "number"},
 		],
+	}, {
+		title: "Filesystem API", expanded: false,
+		graphs: [
+			{metric: "filesystem_write", data_type: "number"},
+			{metric: "filesystem_write_size", data_type: "bytes"},
+			{metric: "filesystem_read", data_type: "number"},
+			{metric: "filesystem_read_size", data_type: "bytes"},
+		]
 	}, {
 		title: "Task scheduler", expanded: false,
 		graphs: [
@@ -102,6 +122,7 @@ const groups: {
 			{metric: "pixelstore_shard_delete_size", data_type: "bytes"},
 			{metric: "pixelstore_shard_repair", data_type: "number"},
 			{metric: "pixelstore_shard_repair_size", data_type: "bytes"},
+			{metric: "pixelstore_shard_repair_failed", data_type: "number"},
 			{metric: "pixelstore_shard_move", data_type: "number"},
 			{metric: "pixelstore_shard_move_size", data_type: "bytes"},
 		],
@@ -161,6 +182,9 @@ const load_metrics = async (window: number, interval: number) => {
 	// If the dataset uses the duration type, we need to convert the values
 	// to milliseconds
 	for (const group of groups) {
+		if (!group.expanded) {
+			continue
+		}
 		for (const graph of group.graphs) {
 			if (graph.data_type === "duration" && metrics.metrics[graph.metric] !== undefined) {
 				for (const host of Object.keys(metrics.metrics[graph.metric])) {
@@ -214,22 +238,22 @@ onDestroy(() => {
 
 {#if loaded}
 	<div class="highlight_border" style="margin-bottom: 6px;">
-		<button on:click={() => setWindow(60, 1)}>Hour 1m</button>
-		<button on:click={() => setWindow(720, 1)}>Half Day 1m</button>
-		<button on:click={() => setWindow(1440, 60)}>Day 1h</button>
-		<button on:click={() => setWindow(10080, 60)}>Week 1h</button>
-		<button on:click={() => setWindow(43200, 60)}>Month 1h</button>
-		<button on:click={() => setWindow(131400, 1440)}>Quarter 1d</button>
-		<button on:click={() => setWindow(262800, 1440)}>Half-year 1d</button>
-		<button on:click={() => setWindow(525600, 1440)}>Year 1d</button>
-		<button on:click={() => setWindow(1051200, 1440)}>Two Years 1d</button>
-		<button on:click={() => setWindow(2628000, 1440)}>Five Years 1d</button>
+		<button on:click={() => setWindow(60, 1)} class:button_highlight={dataWindow === 60}>Hour 1m</button>
+		<button on:click={() => setWindow(720, 1)} class:button_highlight={dataWindow === 720}>Half Day 1m</button>
+		<button on:click={() => setWindow(1440, 60)} class:button_highlight={dataWindow === 1440}>Day 1h</button>
+		<button on:click={() => setWindow(10080, 60)} class:button_highlight={dataWindow === 10080}>Week 1h</button>
+		<button on:click={() => setWindow(43200, 60)} class:button_highlight={dataWindow === 43200}>Month 1h</button>
+		<button on:click={() => setWindow(131400, 1440)} class:button_highlight={dataWindow === 131400}>Quarter 1d</button>
+		<button on:click={() => setWindow(262800, 1440)} class:button_highlight={dataWindow === 262800}>Half-year 1d</button>
+		<button on:click={() => setWindow(525600, 1440)} class:button_highlight={dataWindow === 525600}>Year 1d</button>
+		<button on:click={() => setWindow(1051200, 1440)} class:button_highlight={dataWindow === 1051200}>Two Years 1d</button>
+		<button on:click={() => setWindow(2628000, 1440)} class:button_highlight={dataWindow === 2628000}>Five Years 1d</button>
 		<br/>
 		<ToggleButton bind:on={showAggregate}>Aggregate</ToggleButton>
 	</div>
 
 	{#each groups as group (group.title)}
-		<Expandable click_expand bind:expanded={group.expanded} on_expand={(expanded) => load_metrics(dataWindow, dataInterval)}>
+		<Expandable click_expand bind:expanded={group.expanded} on_expand={(expanded) => load_metrics(dataWindow, dataInterval)} nopad>
 			<div slot="header">
 				<div class="title">{group.title}</div>
 			</div>
@@ -257,6 +281,6 @@ onDestroy(() => {
 }
 .grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(min(100vw, 500px), 1fr));
 }
 </style>

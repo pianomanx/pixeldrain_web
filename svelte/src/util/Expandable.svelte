@@ -1,6 +1,7 @@
 <script lang="ts">
 // Whether the Expandable is expanded by default
 export let expanded = false
+export let nopad = false
 export const toggle = () => {
 	expanded = !expanded
 }
@@ -54,7 +55,7 @@ export let highlight = false
 		</button>
 	</div>
 	{#if expanded}
-		<div class="body">
+		<div class="body" class:nopad>
 			<slot></slot>
 		</div>
 	{/if}
@@ -92,5 +93,8 @@ export let highlight = false
 .body {
 	padding: 0.5em;
 	border-top: 1px solid var(--separator);
+}
+.nopad {
+	padding: 0;
 }
 </style>

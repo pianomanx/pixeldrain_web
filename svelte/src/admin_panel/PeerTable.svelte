@@ -18,6 +18,43 @@ let update_peers = (peers) => {
 	sort("")
 }
 
+// Expand an IPv6 address into eight zero-padded groups of four hex digits so
+// that it sorts numerically when compared as a string. Handles the "::"
+// shorthand and an optional embedded IPv4 address in the final 32 bits.
+let expand_ipv6 = (addr) => {
+	addr = addr.toLowerCase()
+
+	// An embedded IPv4 address (e.g. "::ffff:192.0.2.1") fills the last two
+	// groups. Convert it to hex before expanding the rest.
+	let v4 = addr.match(/(\d+)\.(\d+)\.(\d+)\.(\d+)$/)
+	if (v4 !== null) {
+		let g1 = ((parseInt(v4[1]) << 8) | parseInt(v4[2])).toString(16)
+		let g2 = ((parseInt(v4[3]) << 8) | parseInt(v4[4])).toString(16)
+		addr = addr.slice(0, v4.index) + g1 + ":" + g2
+	}
+
+	// "::" stands in for one or more all-zero groups. Split on it to learn how
+	// many groups are missing from the middle.
+	let halves = addr.split("::")
+	let head = halves[0] === "" ? [] : halves[0].split(":")
+	let tail = halves.length > 1 && halves[1] !== "" ? halves[1].split(":") : []
+	let zeros = new Array(Math.max(0, 8 - head.length - tail.length)).fill("0")
+
+	return head.concat(zeros, tail).map(g => g.padStart(4, "0")).join(":")
+}
+
+// Turn a hostname into a string that sorts correctly. IPv6 addresses (wrapped
+// in brackets, "[::1]:1234") are expanded; everything else sorts as-is.
+let sort_key = (hostname) => {
+	let end = hostname.startsWith("[") ? hostname.indexOf("]") : -1
+	if (end === -1) {
+		return hostname.toLowerCase()
+	}
+	let addr = hostname.slice(1, end)
+	let port = hostname.slice(end + 2) // skip the "]:"
+	return expand_ipv6(addr) + ":" + port.padStart(5, "0")
+}
+
 let sort_field = "hostname"
 let asc = true
 let sort = (field) => {
@@ -31,21 +68,19 @@ let sort = (field) => {
 
 	console.log("sorting by", field, "asc", asc)
 	peers.sort((a, b) => {
-		if (typeof (a[field]) === "number") {
+		let av = a[field]
+		let bv = b[field]
+		if (typeof av === "number") {
 			// Sort ints from high to low
-			if (asc) {
-				return a[field] - b[field]
-			} else {
-				return b[field] - a[field]
-			}
-		} else {
-			// Sort strings alphabetically
-			if (asc) {
-				return a[field].localeCompare(b[field])
-			} else {
-				return b[field].localeCompare(a[field])
-			}
+			return asc ? av - bv : bv - av
 		}
+		if (field === "hostname") {
+			// Normalize so IPv6 addresses sort numerically
+			av = sort_key(av)
+			bv = sort_key(bv)
+		}
+		// Sort strings alphabetically
+		return asc ? av.localeCompare(bv) : bv.localeCompare(av)
 	})
 	peers = peers
 }
@@ -70,7 +105,7 @@ let sort = (field) => {
 			</tr>
 		</thead>
 		<tbody>
-			{#each peers as peer (peer.ip)}
+			{#each peers as peer (peer.id)}
 				<tr style="border: none;"
 					class:highlight_red={!peer.reachable}
 					class:highlight_yellow={peer.free_space < peer.min_free_space / 2}

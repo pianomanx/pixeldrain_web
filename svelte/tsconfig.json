@@ -4,11 +4,19 @@
 			"es2017",
 			"dom"
 		],
-		"baseUrl": "./src",
+		"paths": {
+			"*": [
+				"./src/*"
+			]
+		},
 		"verbatimModuleSyntax": true,
 		"target": "ES2017",
 		"noUnusedLocals": true,
 		"module": "preserve",
 		"moduleResolution": "bundler",
-	}
+		"strict": false,
+	},
+	"include": [
+		"src/"
+	]
 }
